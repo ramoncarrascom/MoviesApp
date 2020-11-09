@@ -36,8 +36,7 @@ export class MoviesService {
 
     query = URL + query;
     query += `&api_key=${API_KEY}&language=es&include_image_language=es`;
-
-    console.log('Query GET', query)
+    
     return this.httpClient.get<T>(query);
   }
 
@@ -46,6 +45,14 @@ export class MoviesService {
     const ultimoDia = new Date( hoy.getFullYear(), hoy.getMonth() + 1, 0);
     const primerDia = new Date( hoy.getFullYear(), hoy.getMonth(), 1);
 
-    return this.ejecutarQuery<RespuestaMDB>(`/discover/movie?primary_release_date.gte=${this.formatDate(primerDia)}&primary_release_date.lte=${this.formatDate(ultimoDia)}`);
+    const query = `/discover/movie?primary_release_date.gte=${this.formatDate(primerDia)}&primary_release_date.lte=${this.formatDate(ultimoDia)}`;
+
+    return this.ejecutarQuery<RespuestaMDB>(query);
+  }
+
+  getPopular(page: number) {
+    const query = `/discover/movie?sort_by=popularity.desc&page=${page}`;
+
+    return this.ejecutarQuery<RespuestaMDB>(query);
   }
 }
