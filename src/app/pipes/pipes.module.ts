@@ -2,17 +2,20 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ImagenPipe } from './imagen.pipe';
 import { ParesPipe } from './pares.pipe';
+import { FiltrarGeneroPipe } from './filtrar-genero.pipe';
 
 
 
 @NgModule({
   declarations: [
     ImagenPipe,
-    ParesPipe
+    ParesPipe,
+    FiltrarGeneroPipe
   ],
   exports: [
     ImagenPipe,
-    ParesPipe
+    ParesPipe,
+    FiltrarGeneroPipe
   ],
   imports: [
     CommonModule

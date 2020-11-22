@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MoviesService } from '../../services/movies.service';
 import { PeliculaDetalle, Cast } from '../../interfaces/interfaces';
 import { ModalController } from '@ionic/angular';
+import { LocalDataService } from '../../services/local-data.service';
 
 @Component({
   selector: 'app-detalle',
@@ -14,6 +15,7 @@ export class DetalleComponent implements OnInit {
 
   pelicula: PeliculaDetalle;
   actores: Cast[] = [];
+  existe: boolean = false;
 
   oculto = 150;
 
@@ -23,9 +25,12 @@ export class DetalleComponent implements OnInit {
   };
 
   constructor(private moviesService: MoviesService,
-              private modalCtrl: ModalController) { }
+              private modalCtrl: ModalController,
+              private localData: LocalDataService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+
+    this.existe = await this.localData.existePelicula(this.id);
 
     this.moviesService.getPeliculaDetalle(this.id)
       .subscribe( resp => {
@@ -40,7 +45,16 @@ export class DetalleComponent implements OnInit {
   }
 
   regresar() {
+
     this.modalCtrl.dismiss();
+
+  }
+
+  async favorito() {
+
+    await this.localData.guardarPelicula(this.pelicula);
+    this.existe = await this.localData.existePelicula(this.id);
+
   }
 
 }
